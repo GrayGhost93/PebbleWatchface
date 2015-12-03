@@ -1,0 +1,60 @@
+{
+    "appKeys": {
+        "KEY_CONDITIONS": 1,
+        "KEY_SUNRISE": 2,
+        "KEY_SUNSET": 3,
+        "KEY_TEMPERATURE": 0
+    },
+    "capabilities": [
+        "location"
+    ],
+    "companyName": "goltz-chemnitz.de",
+    "longName": "Tutorial Watchface",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/icon_bt_dc.png",
+                "name": "ICON_BT_DC",
+                "type": "png"
+            },
+            {
+                "file": "images/icon_snowy.png",
+                "name": "ICON_SNOWY",
+                "type": "png"
+            },
+            {
+                "file": "images/icon_rainy.png",
+                "name": "ICON_RAINY",
+                "type": "png"
+            },
+            {
+                "file": "images/icon_sunny.png",
+                "name": "ICON_SUNNY",
+                "type": "png"
+            },
+            {
+                "file": "images/icon_cloudy.png",
+                "name": "ICON_CLOUDY",
+                "type": "png"
+            },
+            {
+                "file": "images/white_line.png",
+                "name": "IMAGE_BACKGROUND",
+                "type": "png"
+            }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "Tutorial Watchface",
+    "targetPlatforms": [
+        "aplite",
+        "basalt",
+        "chalk"
+    ],
+    "uuid": "38de68e4-f73c-4d03-b5b3-7d987b18ada6",
+    "versionLabel": "0.1",
+    "watchapp": {
+        "watchface": true
+    }
+}
