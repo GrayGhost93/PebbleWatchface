@@ -54,12 +54,17 @@ function locationSuccess() { //pos) {
       var sunset = (sunset_long.getHours()<10?'0':'') + sunset_long.getHours() + ':' + (sunset_long.getMinutes()<10?'0':'') + sunset_long.getMinutes();
       console.log('Sunset: ' + sunset);
       
+      // City-Name
+      var city = json.name;
+      console.log('City: ' + city);
+      
       // Assemble dictionary using our keys
       var dictionary = {
         'KEY_TEMPERATURE': temperature,
         'KEY_CONDITIONS': conditions,
         'KEY_SUNRISE' : sunrise,
-        'KEY_SUNSET' : sunset
+        'KEY_SUNSET' : sunset,
+        'KEY_CITY' : city
       };
       
       // Send to Pebble

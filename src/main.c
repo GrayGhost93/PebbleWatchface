@@ -4,6 +4,7 @@
 #define KEY_CONDITIONS 1
 #define KEY_SUNRISE 2
 #define KEY_SUNSET 3
+#define KEY_CITY 4
 
 static Window *s_main_window;
 
@@ -13,6 +14,7 @@ static TextLayer *s_date_layer;
 static TextLayer *s_weather_layer;
 static TextLayer *s_battery_layer;
 static TextLayer *s_sun_layer;
+static TextLayer *s_city_layer;
 
 static BitmapLayer *s_background_layer;
 static GBitmap *s_background_bitmap;
@@ -105,6 +107,7 @@ static void main_window_load(Window *window) {
   s_weather_layer = text_layer_create(GRect(10, 5, bounds.size.w, 25));
   s_battery_layer = text_layer_create(GRect(-5, 148, bounds.size.w, 34));
   s_sun_layer = text_layer_create(GRect(5, 148, bounds.size.w, 14));
+  s_city_layer = text_layer_create(GRect(-10, 45, bounds.size.w, 14));
 
   // Improve the layout to be more like a watchface
   text_layer_set_background_color(s_day_layer, GColorClear);
@@ -138,6 +141,11 @@ static void main_window_load(Window *window) {
   text_layer_set_text_color(s_sun_layer, GColorWhite);
   text_layer_set_font(s_sun_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14));
   text_layer_set_text_alignment(s_sun_layer, GTextAlignmentLeft);
+  
+  text_layer_set_background_color(s_city_layer, GColorClear);
+  text_layer_set_text_color(s_city_layer, GColorWhite);
+  text_layer_set_font(s_city_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14));
+  text_layer_set_text_alignment(s_city_layer, GTextAlignmentRight);
 
   // Add it as a child layer to the Window's root layer
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer));
@@ -149,6 +157,7 @@ static void main_window_load(Window *window) {
   layer_add_child(window_layer, text_layer_get_layer(s_day_layer)); 
   layer_add_child(window_layer, text_layer_get_layer(s_battery_layer));
   layer_add_child(window_layer, text_layer_get_layer(s_sun_layer));
+  layer_add_child(window_layer, text_layer_get_layer(s_city_layer));
   bitmap_layer_set_bitmap(s_icon_layer, s_icon_bitmap);
   layer_add_child(window_layer, bitmap_layer_get_layer(s_icon_layer));
   
@@ -162,6 +171,7 @@ static void main_window_unload(Window *window) {
   text_layer_destroy(s_date_layer);
   text_layer_destroy(s_battery_layer);
   text_layer_destroy(s_sun_layer);
+  text_layer_destroy(s_city_layer);
   // Destroy GBitmap
   gbitmap_destroy(s_background_bitmap);
   gbitmap_destroy(s_icon_bitmap);
@@ -178,12 +188,14 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   static char temperature_buffer[8];
   static char weather_layer_buffer[32];
   static char sun_layer_buffer[15];
+  static char city_layer_buffer[32];
   
   // Read tuples for data
   Tuple *temp_tuple = dict_find(iterator, KEY_TEMPERATURE);
   Tuple *conditions_tuple = dict_find(iterator, KEY_CONDITIONS);
   Tuple *sunrise_tuple = dict_find(iterator, KEY_SUNRISE);
   Tuple *sunset_tuple = dict_find(iterator, KEY_SUNSET);
+  Tuple *city_tuple = dict_find(iterator, KEY_CITY);
   
   // If all data is available, use it
   if(temp_tuple && conditions_tuple) {
@@ -210,6 +222,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
       bitmap_layer_set_bitmap(s_icon_layer, s_icon_bitmap);
     }
     snprintf(sun_layer_buffer, sizeof(sun_layer_buffer), "%s - %s", sunrise_tuple->value->cstring, sunset_tuple->value->cstring);
+    snprintf(city_layer_buffer, sizeof(city_layer_buffer), "%s", city_tuple->value->cstring);
   }
   
   // Assemble full string and display
@@ -218,6 +231,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     text_layer_set_text(s_weather_layer, weather_layer_buffer);
     snprintf(sun_layer_buffer, sizeof(sun_layer_buffer), "%s", sun_layer_buffer);
     text_layer_set_text(s_sun_layer, sun_layer_buffer);
+    text_layer_set_text(s_city_layer, city_layer_buffer);
   } else {
     snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "Getrennt!");
     text_layer_set_text(s_weather_layer, weather_layer_buffer);

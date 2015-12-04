@@ -1,5 +1,6 @@
 {
     "appKeys": {
+        "KEY_CITY": 4,
         "KEY_CONDITIONS": 1,
         "KEY_SUNRISE": 2,
         "KEY_SUNSET": 3,
